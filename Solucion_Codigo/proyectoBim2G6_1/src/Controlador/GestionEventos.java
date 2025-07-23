@@ -15,14 +15,14 @@ public class GestionEventos {
         eventosPresentables.add(new Evento(nombreArtista, diaPresentacion));
     }
 
-    public void imprimirEvento() {
+    public String imprimirEvento() {
         if (acumulacionEvento.isEmpty()) {
-            System.out.println("No hay eventos registrados.");
+            return "No hay eventos registrados";
         } else {
-            System.out.println("Lista de eventos:");
             for (Evento evento : acumulacionEvento) {
-                System.out.println(evento);
+                return evento.toString();
             }
         }
+        return "";
     }
 }

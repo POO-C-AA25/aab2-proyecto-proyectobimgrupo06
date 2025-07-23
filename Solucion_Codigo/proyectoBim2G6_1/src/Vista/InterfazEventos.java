@@ -170,8 +170,8 @@ public class InterfazEventos extends javax.swing.JFrame {
             GestionEventos Eventotemp = new GestionEventos();
 
             Eventotemp.insertarEvento(Eventotemp.acumulacionEvento, nombreArtista, fechaEvento);
-            Eventotemp.imprimirEvento();
-
+            
+            JOptionPane.showMessageDialog(null, GestionEventos.acumulacionEvento.toString());
             txt_Artista.setText("");
             int_diaEvento.setText("");
 
