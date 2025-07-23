@@ -236,11 +236,37 @@ public class InterfazVisitantes extends javax.swing.JFrame {
     }//GEN-LAST:event_int_numCedulaActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        //Boton de modificar 
+        
+        try {
+            String busqueda = int_identificador.getText().trim();
+            //Conexion a la BD
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/feriadeloja", "root", "");
+            
+            PreparedStatement intruccionBD = conexion.prepareStatement("UPDATE visitantes SET cantEntradasN = ?, cantEntradasE = ?, discapacidad = ?, eventoAsistido = ?, `C.I` = ? WHERE `C.I` = " + busqueda);
+        
+            intruccionBD.setString(1, int_entradasN.getText().trim());
+            intruccionBD.setString(2, int_entradasE.getText().trim());
+            intruccionBD.setString(3, bool_discapacidad.getText().trim());
+            intruccionBD.setString(4, txt_Evento.getText().trim());
+            intruccionBD.setString(5, int_numCedula.getText().trim());
+            
+            intruccionBD.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Cambios realizados con exito. ");
+            
+            
+        } catch (Exception e) {
+        
+            JOptionPane.showMessageDialog(null, "Cambio fallido.");
+            System.out.println("Error: " + e);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     //Codigo del boton "Buscar"
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+        //Boton buscar
         try {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/feriadeloja", "root", "");
 
@@ -261,13 +287,33 @@ public class InterfazVisitantes extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            e.printStackTrace(); // Mejor para detectar el error
+            System.out.println(e);
             JOptionPane.showMessageDialog(null, "Error en la búsqueda");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        //Boton eliminar
+        try {
+            Connection conexionBD = DriverManager.getConnection("jdbc:mysql://localhost/feriadeloja", "root", "");
+            PreparedStatement instruccionesBD = conexionBD.prepareStatement("DELETE FROM visitantes WHERE `C.I` = ?");
+        
+            instruccionesBD.setString(1, int_identificador.getText().trim());
+            
+            instruccionesBD.executeUpdate();
+            
+            int_entradasN.setText("");
+            int_entradasE.setText("");
+            bool_discapacidad.setText("");
+            txt_Evento.setText("");
+            int_numCedula.setText("");
+            
+            JOptionPane.showMessageDialog(null, "Registro eliminado");
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error en la búsqueda");
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {

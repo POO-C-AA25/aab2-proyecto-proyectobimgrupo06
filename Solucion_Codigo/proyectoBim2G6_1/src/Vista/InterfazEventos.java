@@ -55,6 +55,11 @@ public class InterfazEventos extends javax.swing.JFrame {
         });
 
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Buscar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -72,6 +77,11 @@ public class InterfazEventos extends javax.swing.JFrame {
         });
 
         jButton4.setText("Modificar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,8 +190,71 @@ public class InterfazEventos extends javax.swing.JFrame {
     }//GEN-LAST:event_int_IdentificadorEvActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        // Boton buscar
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/feriadeloja", "root", "");
+
+            
+            PreparedStatement instruccionSQL = conexion.prepareStatement("SELECT * FROM eventos WHERE `ID` = ?");
+            instruccionSQL.setString(1, int_IdentificadorEv.getText().trim());
+            
+            ResultSet resultado = instruccionSQL.executeQuery();
+            if(resultado.next()){
+                txt_Artista.setText(resultado.getString("artista"));
+                int_diaEvento.setText(resultado.getString("fechaEvento"));
+            }else{
+                JOptionPane.showMessageDialog(null, "Evento no registrado \n Ingrese identificador nuevamente.");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error en la búsqueda");
+        }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // Boton modificar EV
+        try {
+            String busqueda = int_IdentificadorEv.getText().trim();
+            
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/feriadeloja", "root", "");
+
+            // Especificamos columnas para evitar problemas
+            PreparedStatement instruccionSQL = conexion.prepareStatement("UPDATE eventos SET artista = ?, fechaEvento = ? WHERE ID =" + busqueda);
+            
+            instruccionSQL.setString(1, txt_Artista.getText().trim());
+            instruccionSQL.setString(2, int_diaEvento.getText().trim());
+            
+            instruccionSQL.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Cambio realizado con exito");
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Cambio fallido");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Boton eliminar
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/feriadeloja", "root", "");
+
+            
+            PreparedStatement instruccionSQL = conexion.prepareStatement("DELETE FROM eventos WHERE ID = ?");
+            
+            instruccionSQL.setString(1, int_IdentificadorEv.getText().trim());
+            instruccionSQL.executeUpdate();
+            
+            txt_Artista.setText("");
+            int_diaEvento.setText("");
+            int_IdentificadorEv.setText("");
+            
+            JOptionPane.showMessageDialog(null, "Registro eliminado");
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error en la búsqueda");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
