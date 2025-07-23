@@ -42,6 +42,12 @@ public class InterfazVisitantes extends javax.swing.JFrame {
 
         jLabel1.setText("Cantidad de entradas normales: ");
 
+        int_entradasN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int_entradasNActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Cantidad de entradas eventos: ");
 
         jLabel3.setText("¿Posee alguna discapacidad? (true/false)");
@@ -273,9 +279,11 @@ public class InterfazVisitantes extends javax.swing.JFrame {
             // Comilla invertida para nombre de columna con punto
             PreparedStatement instruccionSQL = conexion.prepareStatement("SELECT * FROM visitantes WHERE `C.I` = ?");
             instruccionSQL.setString(1, int_identificador.getText().trim());
-
+            
+            //la varibale resultado va a trabajar con la BD -> Query
             ResultSet resultado = instruccionSQL.executeQuery();
-
+            
+            //Si resultado tiene un valor siguiente, es decir no esta vacio se va a ejecutar y obtener los valores de la BD
             if (resultado.next()) {
                 int_entradasN.setText(resultado.getString("cantEntradasN"));
                 int_entradasE.setText(resultado.getString("cantEntradasE"));
@@ -283,6 +291,8 @@ public class InterfazVisitantes extends javax.swing.JFrame {
                 txt_Evento.setText(resultado.getString("eventoAsistido"));
                 int_numCedula.setText(resultado.getString("C.I"));
             } else {
+                //Esto va a invocar una ventana emergente con el String que se ingrese
+                
                 JOptionPane.showMessageDialog(null, "Visitante no registrado \n Ingrese el identificador nuevamente.");
             }
 
@@ -315,6 +325,10 @@ public class InterfazVisitantes extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void int_entradasNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_int_entradasNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_int_entradasNActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -18,7 +18,6 @@ public class GestionVisitantes {
 
         v.ingresarEntradas(entradasN, entradasE);
         calcularPago(v);
-        listaVisitantes.add(v);
         acumulacionVisitantes.add(v);
     }
 
